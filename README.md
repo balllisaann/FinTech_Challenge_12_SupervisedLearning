@@ -1,20 +1,17 @@
 # FinTech_Challenge_12_SupervisedLearning
 
 Author: Lisa Bailey (balllisaann@yahoo.com)
+
 Date: 11/7/2021
-
-## Overview of the Analysis
-
-In this section, describe the analysis you completed for the machine learning models used in this Challenge. This might include:
-
-* Explain the purpose of the analysis.
-* Explain what financial information the data was on, and what you needed to predict.
-* Provide basic information about the variables you were trying to predict (e.g., `value_counts`).
-* Describe the stages of the machine learning process you went through as part of this analysis.
-* Briefly touch on any methods you used (e.g., `LogisticRegression`, or any resampling method).
 
 ### Purpose
 
+The purpose of this analysis is to classify whether loan borrowers are likely to default on a loan or are a save lending investment.  
+
+## Overview of the Analysis
+
+Logistic regression was used to attemp to classify clients to see if they are likely to default on a loan or not.  Two models were built: one on the original unscaled data and the other model used the Randome Oversampling technique due to the data being very imbalanced.  
+In this section, describe the analysis you completed for the machine learning models used in this Challenge. This might include:
 
 An **abusurdly** simple Logisitc Regression model was used to analyze the data.  
 * We were not prompted to see if there were any missing values (there were not).
@@ -25,15 +22,18 @@ An **abusurdly** simple Logisitc Regression model was used to analyze the data.
 
 ### Data used 
 
-The data used was loan data.
+The data used was loan data with the following characteristics:
 
-Shape: (77536, 8)
+```Shape: (77536, 8)```
 
+```
 Loan Status: 
 0 (Healthy loans): 75036
 1 (Unhealthy loans): 2500
+```
 
-          loan_size  interest_rate  borrower_income  debt_to_income  \
+```
+          loan_size  interest_rate  borrower_income  debt_to_income  
 count  77536.000000   77536.000000     77536.000000    77536.000000   
 mean    9805.562577       7.292333     49221.949804        0.377318   
 std     2093.223153       0.889495      8371.635077        0.081519   
@@ -52,24 +52,47 @@ min           0.000000          0.000000      0.000000      0.000000
 50%           4.000000          0.000000  18100.000000      0.000000  
 75%           4.000000          1.000000  21400.000000      0.000000  
 max          16.000000          3.000000  75200.000000      1.000000  
-
+```
 
 ## Results
 
-Using bulleted lists, describe the balanced accuracy scores and the precision and recall scores of all machine learning models.
+### Machine Learning Model 1 (unscaled logistic regression on original data):
 
-* Machine Learning Model 1:
+  * Accuracy: 95%
+  * Confusion Matrix:
+     ```
+     [18663,   102],
+     [   56,   563]
+     ```
+       
   * Description of Model 1 Accuracy, Precision, and Recall scores.
+ ```
+          pre       rec       spe        f1       geo       iba       sup
+          0       1.00      0.99      0.91      1.00      0.95      0.91     18765
+          1       0.85      0.91      0.99      0.88      0.95      0.90       619
+ avg total     0.99      0.99      0.91      0.99      0.95      0.91     19384
+ ```
 
+### Machine Learning Model 2 (unscaled logistic regression with random oversampling):
 
-
-* Machine Learning Model 2:
-  * Description of Model 2 Accuracy, Precision, and Recall scores.
+  * Accuracy: 99%
+  * Confusion Matrix:
+     ```
+      [18649,   116],
+      [    4,   615]
+    ```
+* Description of Model 2 Accuracy, Precision, and Recall scores.
+```
+                   pre       rec       spe        f1       geo       iba       sup
+          0       1.00      0.99      0.99      1.00      0.99      0.99     18765
+          1       0.84      0.99      0.99      0.91      0.99      0.99       619
+avg / total     0.99      0.99      0.99      0.99      0.99      0.99     19384
+```
 
 ## Summary
 
-Summarize the results of the machine learning models, and include a recommendation on the model to use, if any. For example:
-* Which one seems to perform best? How do you know it performs best?
-* Does performance depend on the problem we are trying to solve? (For example, is it more important to predict the `1`'s, or predict the `0`'s? )
+**Answer:** 
 
-If you do not recommend any of the models, please justify your reasoning.
+The logistic regression model does fairly well with the original data set.  There is a 95% overall accuracy.  However, there is a recall score of 91%, meaning that approximately 9% of loans are being classified as healthy, when in fact, they default.  Yikes!  I would not want to make investments in loads where 9% of the loans that are going to default were given loans.  
+
+The oversampled data gives a much better recall score, of 99%, meaning that of the loans that are going to default, only 1% were classified as healthy and the money loaned out and defaulted. 
